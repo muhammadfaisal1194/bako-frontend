@@ -2,7 +2,7 @@ import React from "react";
 import { ASSET_URL } from "../../utils";
 
 function Portfolio({ portfolio: { id, attributes } }) {
-  console.log('nameeeeee', attributes)
+  console.log("nameeeeee", attributes);
   return (
     <a href={`works/${id}/${attributes.slug}`}>
       <div className="portfolio-item">
@@ -12,7 +12,10 @@ function Portfolio({ portfolio: { id, attributes } }) {
         </div>
         <span className="plus-icon">+</span>
         <div className="thumb">
-          <img src={`${ASSET_URL}${attributes.image.data.attributes.url}`} alt={attributes.name} />
+          <img
+            src={`${ASSET_URL}${attributes.image.data.attributes.url}`}
+            alt={attributes.name}
+          />
           <div className="mask"></div>
         </div>
       </div>

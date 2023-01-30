@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from './../../utils';
+import { API_URL } from "./../../utils";
 import axios from "axios";
 import TrackVisibility from "react-on-screen";
 import Skill from "../Items/Skill";
-
 
 function Skills() {
   const [mySkills, setMySkills] = useState();
 
   useEffect(() => {
-    axios.get(`${API_URL}/my-skills`)
-      .then(res => {
-        setMySkills(res.data?.data)
-      })
+    axios.get(`${API_URL}/my-skills`).then((res) => {
+      setMySkills(res.data?.data);
+    });
   }, []);
   return (
     <>
@@ -22,7 +20,7 @@ function Skills() {
           {mySkills?.map((progress) => (
             <div className="col-md-6 mt-50" key={progress.id}>
               <TrackVisibility once>
-                <Skill name={progress.attributes.name} percentage={progress.attributes.percentage} />
+                <Skill name={progress.attributes.name} />
               </TrackVisibility>
             </div>
           ))}

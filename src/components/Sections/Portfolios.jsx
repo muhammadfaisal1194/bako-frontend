@@ -1,60 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from './../../utils';
+import { API_URL } from "./../../utils";
 import axios from "axios";
 import Portfolio from "../Items/Portfolio";
-
-const filters = [
-  {
-    id: 1,
-    name: "All Projects",
-  },
-  {
-    id: 2,
-    name: "Branding",
-  },
-  {
-    id: 3,
-    name: "Creative",
-  },
-  {
-    id: 4,
-    name: "Design",
-  },
-  {
-    id: 5,
-    name: "Art",
-  },
-];
-
 
 function Portfolios() {
   const [allItems, setAllItems] = useState();
   const [activeFilter, setActiveFilter] = useState("");
   const [visibleItems, setVisibleItems] = useState([]);
+  const [category, setCategory] = useState();
+
   useEffect(() => {
-    axios.get(`${API_URL}/portfolios?populate=*`)
-      .then(res => {
-        setAllItems(res.data?.data)
-        setVisibleItems(res.data?.data);
-        setActiveFilter('all projects')
-      })
+    axios.get(`${API_URL}/portfolios?populate=*`).then((res) => {
+      setAllItems(res.data?.data);
+      setVisibleItems(res.data?.data);
+      setActiveFilter("all projects");
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`${API_URL}/portfolio-categories`).then((res) => {
+      setCategory(res.data?.data);
+    });
   }, []);
 
   const handleChange = (name) => {
-    console.log(name, 'target valueeee');
-    // e.preventDefault();
-    // let targetFilter = e.target.value
-    //   ? e.target.value.toLowerCase()
-    //   : e.target.textContent.toLowerCase();
+    console.log(name, "target valueeee");
     setActiveFilter(name.toLowerCase());
 
-    if (name.toLowerCase() === 'all projects') {
-      setVisibleItems(allItems)
+    if (name.toLowerCase() === "all projects") {
+      setVisibleItems(allItems);
     } else {
       const tempData = allItems.filter((data) => {
-        return (
-          data.attributes.category.includes(name.toLowerCase())
-        );
+        return data.attributes.category.includes(name.toLowerCase());
       });
       setVisibleItems(tempData);
     }
@@ -94,17 +71,17 @@ function Portfolios() {
   return (
     <>
       <ul className="portfolio-filter list-inline">
-        {filters?.map((filter) => (
+        {category?.map((filter) => (
           <li
             className={
-              filter.name.toLowerCase() === activeFilter
+              filter?.attributes?.name.toLowerCase() === activeFilter
                 ? "list-inline-item current"
                 : "list-inline-item"
             }
-            key={filter.id}
-            onClick={() => handleChange(filter.name)}
+            key={filter?.id}
+            onClick={() => handleChange(filter?.attributes?.name)}
           >
-            {filter.name}
+            {filter?.attributes?.name}
           </li>
         ))}
       </ul>
@@ -114,9 +91,9 @@ function Portfolios() {
           className="portfolio-filter-mobile"
           onChange={(e) => handleChange(e)}
         >
-          {filters?.map((filter) => (
-            <option value={filter.name} key={filter.id}>
-              {filter.name}
+          {category?.map((filter) => (
+            <option value={filter?.attributes?.name} key={filter?.id}>
+              {filter?.attributes?.name}
             </option>
           ))}
         </select>
@@ -134,4 +111,3 @@ function Portfolios() {
 }
 
 export default Portfolios;
-

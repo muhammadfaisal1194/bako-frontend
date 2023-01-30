@@ -217,7 +217,9 @@ function Header({ toggleHeader, toggleHandler }) {
                     without
                     rel="noreferrer"
                   >
-                    {<FaBehance />}
+                    {/* {<FaBehance />} */}
+
+                    <i className={`${item?.attributes?.icon}`}></i>
                   </a>
                 </li>
               ))}
